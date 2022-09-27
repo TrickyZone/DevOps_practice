@@ -49,6 +49,8 @@ pipeline{
             success{
                 echo "========pipeline executed successfully ========"
                 slackSend channel: 'devopslearning', message: 'Your job runed Successfully'
+            }
+        }
 
     }
 }
