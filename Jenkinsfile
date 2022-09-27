@@ -42,15 +42,15 @@ pipeline{
             }
             
         }
-        post{
-            always{
-                echo "========always========"
-            }
-            success{
-                echo "========pipeline executed successfully ========"
-                slackSend channel: 'devopslearning', message: 'Your job runed Successfully'
-            }
-        }
+        // post{
+        //     always{
+        //         echo "========always========"
+        //     }
+        //     success{
+        //         echo "========pipeline executed successfully ========"
+        //         slackSend channel: 'devopslearning', message: 'Your job runed Successfully'
+        //     }
+        // }
 
     }
 }
