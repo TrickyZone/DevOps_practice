@@ -1,6 +1,10 @@
 pipeline{
     agent any
+    environment {
+        VERSION = "${env.BUILD_ID}"
+    }
     stages{
+        
         stage("Sonar Quality Checks"){
             // agent {
             //     docker {
@@ -14,12 +18,28 @@ pipeline{
                         sh './gradlew sonarqube'
            
                     }
-                    timeout(time: 1, unit: 'HOURS') {
-                    waitForQualityGate abortPipeline: true
-                    }
                 
                 }
             }
+        }
+
+
+        stage("Docker build and docker push"){
+            steps{
+                script{
+                    withCredentials([string(credentialsId: 'Nexuspassfordocker', variable: 'docker-nexus')]) {
+                        sh """
+                            docker build -t 3.6.38.239:8083/springboot:${VERSION} .
+                            docker login -u admin -p $docker-nexus 3.6.38.239:8083 
+                            docker push 3.6.38.239:8083/springboot:${VERSION}
+                            docker rmi 3.6.38.239:8083/springboot:${VERSION}
+                        """
+   
+                    }
+                    
+                }
+            }
+            
         }
     }
 }
